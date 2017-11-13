@@ -3,6 +3,10 @@ const http = require('http');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const dishRouter = require('./routes/dishRouter');
+const promoRouter = require('./routes/promoRouter');
+const leaderRouter = require('./routes/leaderRouter');
+
+
 
 const hostname = 'localhost';
 const port = 3000;
@@ -14,23 +18,8 @@ app.use(bodyParser.json());//can use bodyParser when required and it helps to pa
 //mounting of dishRouter
 app.use('/dishes', dishRouter); //any request coming to /dishes will be handled by dishRouter
 
-//for dishIDs
-app.get('/dishes/:dishId', (req,res,next) => {
-    res.end('Will send details of the dish: '+ req.params.dishId + ' to you!');
-});
-
-app.post('/dishes/:dishId', (req, res, next) => {	//req.body has parsed the json data
-	res.statusCode = 403;	
-	res.end('Post operation is not supported on /dishes/'+ req.params.dishId);});
-
-app.put('/dishes/:dishId', (req, res, next) => {	
-	res.write('Updating the dish: '+ req.params.dishId + '\n');
-	res.end('Will update the dish '+ req.body.name + 'with details: '+ req.body.description);
-});
-
-app.delete('/dishes/:dishId', (req,res,next) => {
-    res.end('Deleting dish:' + req.params.dishId);
-});
+app.use('/promotions', promoRouter); //any request coming to /promotions will be handled by promoRouter
+app.use('/leaders', leaderRouter);
 
 
 app.use(express.static(__dirname+'/public'))  //use the static html files from this path
